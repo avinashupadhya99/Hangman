@@ -40,6 +40,7 @@ public class GameClient extends JFrame implements Runnable {
 	ArrayList<Character> entr;
 	
 	private int length, count, chances, ind, aFlg;
+	private static int nP=0;
 	
 	JPanel panel = new JPanel();
 
@@ -84,7 +85,7 @@ public class GameClient extends JFrame implements Runnable {
 		out.writeUTF(loginName);
 		out.writeUTF("LOGIN "+loginName);
 		
-		this.aFlg = 0;
+		aFlg = 0;
 		
 		info = new JTextField(15);
 		info.setBorder(null);
@@ -150,32 +151,38 @@ public class GameClient extends JFrame implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//Kill the thread
+		System.out.println(loginName+" thread stopped");
+		this.stop();
 		System.exit(1);		
 	}
 
 
 	private void multiPlayer() {
+		nP++;
 		panel.removeAll();
 		panel.add(rMainMenu);
 		panel.add(mWord);
 		panel.add(cBox);
 		panel.add(userList);
 		
-		this.exit = false;
-		this.word="";
+		exit = false;
+		word="";
 		System.out.println("CheckPoint");
-		new Thread(this).start();
+		if(nP==1) {
+			new Thread(this).start();
+		}
 		
 		rMainMenu.addActionListener(event ->{
-			if(this.word.length()>0) {
-				for(int i=0;i<this.word.length();i++) {
+			if(word.length()>0) {
+				for(int i=0;i<word.length();i++) {
 					//deletes all the fields JTextFields 
-					this.fields[i] = null;
+					fields[i] = null;
 				}
 			}
-			//Kill the thread
-			System.out.println(this.loginName+" thread stopped");
-			this.stop();
+			
+			aFlg=0;
+			cBox.setSelected(false);
 			mainMenu();
 		});
 		
@@ -227,26 +234,27 @@ public class GameClient extends JFrame implements Runnable {
 
 
 	protected void chFlg(int i) {
-		this.aFlg = i;
+		aFlg = i;
 	}
 
 
 	private void playBot() {
 		panel.removeAll();
 		ind = rand.nextInt(words.length);
-		this.word = words[ind];
-		this.length = word.length();
-		this.count = 0;
-		this.chances=0;
-		this.pict.setIcon(new ImageIcon("src/Images/zeroth.png"));
-		this.result.setText("");
-		this.tries.setText(""+chances);
-		
+		word = words[ind];
+		length = word.length();
+		count = 0;
+		chances=0;
+		pict.setIcon(new ImageIcon("src/Images/zeroth.png"));
+		result.setText("");
+		tries.setText(""+chances);
+		input.setText("");
+		input.setEditable(true);
 		rMainMenu.addActionListener(event ->{
-			if(this.word.length()>0) {
-				for(int i=0;i<this.word.length();i++) {
+			if(word.length()>0) {
+				for(int i=0;i<word.length();i++) {
 					//deletes all the fields JTextFields 
-					this.fields[i] = null;
+					fields[i] = null;
 				}
 			}
 			mainMenu();
@@ -408,13 +416,13 @@ public class GameClient extends JFrame implements Runnable {
 			}
 		}
 		
-		this.count = 0;
-		this.chances=0;
+		count = 0;
+		chances=0;
 		input.setEditable(true);
 		tries.setText(""+chances);
 		result.setText("");
-		this.word = words[ind];
-		this.length = word.length();
+		word = words[ind];
+		length = word.length();
 		
 		fields = new JTextField[length];
 		
@@ -449,8 +457,8 @@ public class GameClient extends JFrame implements Runnable {
 				
 				switch(msgType) {
 				case "WORD":
-					if(this.aFlg==1) {
-						if(this.word.length()>0) {
+					if(aFlg==1) {
+						if(word.length()>0) {
 							for(int i=0;i<word.length();i++) {
 								//deletes all the fields JTextFields 
 								panel.remove(fields[i]);
@@ -461,11 +469,11 @@ public class GameClient extends JFrame implements Runnable {
 							panel.remove(result);
 							panel.remove(pict);
 						}
-							this.word = msgParts.nextToken();
+							word = msgParts.nextToken();
 							System.out.println(this.loginName+" received "+this.word);
-							this.length = this.word.length();
-							this.count = 0;
-							this.chances=0;
+							length = word.length();
+							count = 0;
+							chances=0;
 							entr.clear();
 							pict.setIcon(new ImageIcon("src/Images/zeroth.png"));
 							fields = new JTextField[length];
@@ -493,15 +501,15 @@ public class GameClient extends JFrame implements Runnable {
 					break;
 				case "LOGIN":
 					String n = msgParts.nextToken();
-					System.out.println("Added "+n+" to "+this.loginName);
-						if(n.compareTo(this.loginName)!=0) {
+					System.out.println("Added "+n+" to "+loginName);
+						if(n.compareTo(loginName)!=0) {
 							//Add user to combo box
 							userList.addItem(n);
 						}
 						break;
 				case "LOGOUT":
 					String nm = msgParts.nextToken();
-					if(nm.compareTo(this.loginName)!=0) {
+					if(nm.compareTo(loginName)!=0) {
 						//Remove user from combo box
 						userList.removeItem(nm);
 					}
@@ -517,6 +525,6 @@ public class GameClient extends JFrame implements Runnable {
 	
 	public void stop() 
     { 
-        this.exit = true; 
+        exit = true; 
     }
 }
