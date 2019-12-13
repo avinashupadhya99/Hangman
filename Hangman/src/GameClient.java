@@ -152,7 +152,6 @@ public class GameClient extends JFrame implements Runnable {
 			e.printStackTrace();
 		}
 		//Kill the thread
-		System.out.println(loginName+" thread stopped");
 		this.stop();
 		System.exit(1);		
 	}
@@ -168,7 +167,6 @@ public class GameClient extends JFrame implements Runnable {
 		
 		exit = false;
 		word="";
-		System.out.println("CheckPoint");
 		if(nP==1) {
 			new Thread(this).start();
 		}
@@ -366,7 +364,6 @@ public class GameClient extends JFrame implements Runnable {
 						}
 						tries.setText(""+chances);
 						if(chances == maxChances) {
-							System.out.println(word);
 							result.setText("Game Over");
 							input.setEditable(false);
 						}
@@ -451,7 +448,6 @@ public class GameClient extends JFrame implements Runnable {
 			try {
 
 				String msgFrmServer = in.readUTF();
-				System.out.println(msgFrmServer);
 				StringTokenizer msgParts = new StringTokenizer(msgFrmServer);
 				String msgType = msgParts.nextToken();
 				
@@ -470,7 +466,6 @@ public class GameClient extends JFrame implements Runnable {
 							panel.remove(pict);
 						}
 							word = msgParts.nextToken();
-							System.out.println(this.loginName+" received "+this.word);
 							length = word.length();
 							count = 0;
 							chances=0;
@@ -501,7 +496,6 @@ public class GameClient extends JFrame implements Runnable {
 					break;
 				case "LOGIN":
 					String n = msgParts.nextToken();
-					System.out.println("Added "+n+" to "+loginName);
 						if(n.compareTo(loginName)!=0) {
 							//Add user to combo box
 							userList.addItem(n);
