@@ -31,10 +31,6 @@ public class GameServer {
 				out.writeUTF("LOGIN "+lName);
 			}
 			
-			System.out.println("login name: " + loginName);
-
-			
-			
 			clientSockets.add(clientSocket);
 
 			start();
