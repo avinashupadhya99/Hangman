@@ -76,7 +76,7 @@ public class GameServer {
 					}
 				
 				} catch (IOException e) {
-					e.printStackTrace();
+					
 				}
 			}
 		}
