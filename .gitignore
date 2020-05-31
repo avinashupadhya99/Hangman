@@ -1,0 +1,4 @@
+/client/target/classes
+/client/target/test-classes
+/server/target/classes
+/server/target/test-classes
