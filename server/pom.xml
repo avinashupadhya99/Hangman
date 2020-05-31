@@ -3,6 +3,22 @@
   <groupId>com.hangman.server</groupId>
   <artifactId>HangmanServer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+ <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.0.2</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>com.hangman.server.GameServer</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
